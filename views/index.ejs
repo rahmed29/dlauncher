@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inspiron</title>
+    <link rel="preconnect" href="https://rsms.me/" />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body class="dark">
+    <script>
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+      } else {
+        document.body.classList.remove("dark");
+        document.body.classList.add("light");
+      }
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", (event) => {
+          const newColorScheme = event.matches ? "dark" : "light";
+          if (newColorScheme === "dark") {
+            document.body.classList.remove("light");
+            document.body.classList.add("dark");
+          } else {
+            document.body.classList.remove("dark");
+            document.body.classList.add("light");
+          }
+        });
+    </script>
+    <!--
+      To avoid errors whilst using HTML syntax highlighting in VS Code,
+      I pass the data into an invisible element in the DOM and then read the content of said element in the JS code
+    -->
+    <span id="passedData" class="invis"><%= albums %></span>
+    <div id="main">
+      <h2 id="title" class="linear-text-gradient">PRODS.PARTY</h2>
+      <span id="desc"><i id="home"><%= bio %></i></span>
+      <div id="albums"></div>
+    </div>
+    <script>
+      const username = "Inspiron";
+
+      const albums = JSON.parse(
+        document.getElementById("passedData").innerText
+      );
+      document.getElementById("title").innerText = username;
+
+      let html_ = "";
+      for (let i = 0; i < albums.length; i++) {
+        html_ += generateAlbum(albums[i], i);
+      }
+      document.getElementById("albums").innerHTML = html_;
+
+      function generateAlbum(obj, i) {
+        return `
+        <div class="album">
+          <img
+            class="albumArt"
+            src="${obj.img}"
+            onerror="this.onerror=null; this.src='/album_art/avatar.png'"
+            />
+          <div class="albumDetails">
+            [${obj.name}]&nbsp;&nbsp;<a href = "${obj.lan}" target="_blank">LAN</a>,&nbsp;<a href = "${obj.ts}" target="_blank">Tailscale</a>
+          </div>
+        </div>
+        `;
+      }
+    </script>
+  </body>
+</html>

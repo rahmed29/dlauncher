@@ -1,0 +1,177 @@
+:root {
+  font-family: Arial, sans-serif;
+  font-size: 17px;
+}
+
+.light {
+  --main-accent: #f0d8d7;
+  --main-accent-lighter: #f0e8e8;
+  --background: #f3f3f3;
+  --secondary-background: #ffffff;
+  --text: #000000;
+  --menus: #e7dbdb;
+  --text-gradient: linear-gradient(
+    90deg,
+    rgb(140, 160, 170) 0%,
+    rgb(134, 173, 149) 33%,
+    rgb(180, 174, 147) 63%,
+    rgb(211, 161, 158) 100%
+  );
+  --shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  --border: none;
+  color-scheme: light;
+}
+
+.dark {
+  --main-accent: #43686b;
+  --main-accent-lighter: #2b2b2b;
+  --background: #000000;
+  --secondary-background: #000000;
+  --text: #ffffff;
+  --menus: #757575;
+  --text-gradient: linear-gradient(
+    90deg,
+    rgba(186, 204, 214, 1) 0%,
+    rgba(177, 222, 194, 1) 33%,
+    rgba(235, 228, 199, 1) 63%,
+    rgba(237, 221, 83, 1) 100%
+  );
+  --shadow: none;
+  --border: 1px solid rgb(92, 89, 89);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (orientation: portrait) {
+  .plyr--audio {
+    width: 100%;
+  }
+  .album:hover {
+    opacity: 1 !important;
+  }
+}
+
+#main {
+  box-sizing: border-box;
+  background: var(--background);
+  color: var(--text);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  /* padding-top: 15px; */
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 20vh;
+}
+
+#main::after {
+  content: "ryaan.win";
+  opacity: 0.3;
+  font-size: 0.8rem;
+}
+
+#albums {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 10px;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+a {
+  /* text-decoration: none; */
+  color: inherit;
+}
+
+.album {
+  width: 100%;
+  height: 100px;
+  background: var(--secondary-background);
+  border-radius: 12px;
+  display: flex;
+  box-sizing: border-box;
+  padding: 10px;
+  align-items: center;
+  box-shadow: var(--shadow);
+  border: var(--border);
+  transition: 0.2s;
+  gap: 15px;
+}
+
+.albumArt {
+  aspect-ratio: 1 / 1;
+  height: 90%;
+  border-radius: calc(1rem - 10px);
+  /* object-fit: cover; */
+}
+
+.albumDetails {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  font-size: 0.9em;
+  overflow: hidden;
+  opacity: 0.9;
+}
+
+.linear-text-gradient {
+  background: none;
+  color: var(--text);
+  background: var(--text-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hue 5s infinite linear;
+  -webkit-animation: hue 5s infinite linear;
+}
+
+@keyframes hue {
+  from {
+    -webkit-filter: hue-rotate(0deg);
+  }
+  to {
+    -webkit-filter: hue-rotate(-360deg);
+  }
+}
+@-webkit-keyframes hue {
+  from {
+    -webkit-filter: hue-rotate(0deg);
+  }
+  to {
+    -webkit-filter: hue-rotate(-360deg);
+  }
+}
+
+h2 {
+  margin-top: 4vh;
+  margin-bottom: -5px;
+  font-size: 5cqw;
+}
+
+#desc {
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+}
+
+.album:hover {
+  background: var(--main-accent-lighter);
+  box-shadow: none;
+}
+
+.invis {
+  display: none;
+  font-size: 0px;
+}
