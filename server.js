@@ -62,7 +62,7 @@ app.get("/", async (req, res) => {
         return e;
       })
     ),
-    bio: "Self Hosted Applications",
+    bio: "Self-Hosted Applications",
   });
 });
 
