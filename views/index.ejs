@@ -55,6 +55,7 @@
       }
       document.getElementById("albums").innerHTML = html_;
 
+      // Yes, this is susceptible to XSS
       function generateAlbum(obj, i) {
         return `
         <div class="album">
