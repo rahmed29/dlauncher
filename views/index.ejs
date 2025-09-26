@@ -31,44 +31,79 @@
           }
         });
     </script>
-    <!--
-      To avoid errors whilst using HTML syntax highlighting in VS Code,
-      I pass the data into an invisible element in the DOM and then read the content of said element in the JS code
-    -->
-    <span id="passedData" class="invis"><%= albums %></span>
     <div id="main">
-      <h2 id="title" class="linear-text-gradient">PRODS.PARTY</h2>
-      <span id="desc"><i id="home"><%= bio %></i></span>
+      <div id="toggleRouting">
+        <input type="checkbox" id="cbox" />
+        <label
+          for="cbox"
+          title="When enabled, applications on the dashboard will display a single link that dynamically routes your request based on your connecting IP"
+          >Route Requests</label
+        >
+      </div>
+      <h2 id="title" class="linear-text-gradient">Inspiron</h2>
+      <span id="desc"><i id="home">Self-Hosted Applications</i></span>
       <div id="albums"></div>
     </div>
-    <script>
-      const username = "Inspiron";
+    <script type="module">
+      document.getElementById("cbox").addEventListener("input", async (e) => {
+        const response = await fetch("/toggleRouting", {
+          method: "POST",
+          cache: "no-store",
+        });
+        const json = await response.json();
+        if (response.ok) {
+          generateHtml(json.routingEnabled);
+          document.getElementById("cbox").checked = json.routingEnabled;
+        }
+      });
 
-      const albums = JSON.parse(
-        document.getElementById("passedData").innerText
-      );
-      document.getElementById("title").innerText = username;
+      const response = await fetch("/getRoutes", { cache: "no-store" });
+      const json = await response.json();
+      const routes = json.routes;
+      document.getElementById("cbox").checked = json.routingEnabled;
 
-      let html_ = "";
-      for (let i = 0; i < albums.length; i++) {
-        html_ += generateAlbum(albums[i], i);
-      }
-      document.getElementById("albums").innerHTML = html_;
+      generateHtml(json.routingEnabled);
 
-      // Yes, this is susceptible to XSS
-      function generateAlbum(obj, i) {
-        return `
-        <div class="album">
-          <img
-            class="albumArt"
-            src="${obj.img}"
-            onerror="this.onerror=null; this.src='/album_art/avatar.png'"
-            />
-          <div class="albumDetails">
-            [${obj.name}]&nbsp;&nbsp;<a href = "${obj.lan}" target="_blank">LAN</a>,&nbsp;<a href = "${obj.ts}" target="_blank">Tailscale</a>
-          </div>
-        </div>
+      function generateHtml(routing) {
+        for (const img of document.getElementsByClassName("albumArt")) {
+          img.onerror = null;
+        }
+
+        let html_ = "";
+        for (let i = 0; i < routes.length; i++) {
+          html_ += generateAlbum(routes[i], i);
+        }
+        document.getElementById("albums").innerHTML = html_;
+
+        // Yes, this is technically susceptible to XSS
+        function generateAlbum(obj, i) {
+          if (routing) {
+            return `
+            <a href = "/${obj.shorthand}" target="_blank" style = "text-decoration: none;">
+              <div class="album">
+              <img
+                class="albumArt"
+                src="${obj.img}"
+                onerror="this.onerror=null; this.src='/album_art/avatar.png'"
+              />
+              <div class="albumDetails">${obj.name}</div>
+              </div>
+            </a>
         `;
+          }
+          return `
+          <div class="album">
+            <img
+              class="albumArt"
+              src="${obj.img}"
+              onerror="this.onerror=null; this.src='/album_art/avatar.png'"
+            />
+            <div class="albumDetails">
+              [${obj.name}]&nbsp;&nbsp;<a href = "${obj.lan}" target="_blank">LAN</a>,&nbsp;<a href = "${obj.ts}" target="_blank">Tailscale</a>
+            </div>
+          </div>
+        `;
+        }
       }
     </script>
   </body>
