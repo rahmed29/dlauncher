@@ -46,7 +46,7 @@
     </div>
     <script type="module">
       document.getElementById("cbox").addEventListener("input", async (e) => {
-        const response = await fetch("/toggleRouting", {
+        const response = await fetch("/_toggleRouting", {
           method: "POST",
           cache: "no-store",
         });

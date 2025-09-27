@@ -20,7 +20,10 @@ async function getIp() {
     const response = await fetch("https://ipv4.icanhazip.com/");
     const text = await response.text();
     homeIp = text.replaceAll("\n", "");
-  } catch (err) {}
+    return true;
+  } catch (err) {
+    return false;
+  }
 }
 
 await getIp();
@@ -90,14 +93,27 @@ app.get("/getRoutes", async (req, res) => {
 
 app.get("/", async (req, res) => {
   res.status(200).render("index.ejs");
-  if (routingEnabled) {
-    await getIp();
-  }
 });
 
-app.post("/toggleRouting", (req, res) => {
+app.post("/_toggleRouting", (req, res) => {
   routingEnabled = !routingEnabled;
   res.status(200).json({ routingEnabled });
+});
+
+app.get("/_refetch", async (req, res) => {
+  const ok = await getIp();
+  if (ok) {
+    res
+      .status(200)
+      .json({ status: "The server has refetched it's public IP." });
+  } else {
+    res
+      .status(500)
+      .json({
+        error:
+          "The server attempted to refetch it's public IP, but something went wrong.",
+      });
+  }
 });
 
 app.get("/:route", (req, res) => {
