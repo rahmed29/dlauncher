@@ -36,8 +36,8 @@
         <input type="checkbox" id="cbox" />
         <label
           for="cbox"
-          title="When enabled, applications on the dashboard will display a single link that dynamically routes your request based on your connecting IP"
-          >Route Requests</label
+          title="When enabled, applications on the dashboard will be links that dynamically route your request based on your connecting IP instead of showing you separate links for LAN and Tailscale."
+          >Enable Routing</label
         >
       </div>
       <h2 id="title" class="linear-text-gradient">Inspiron</h2>
@@ -99,7 +99,7 @@
               onerror="this.onerror=null; this.src='/album_art/avatar.png'"
             />
             <div class="albumDetails">
-              [${obj.name}]&nbsp;&nbsp;<a href = "${obj.lan}" target="_blank">LAN</a>,&nbsp;<a href = "${obj.ts}" target="_blank">Tailscale</a>
+              <span class = "appName">${obj.name}</span>&nbsp;&nbsp;<a href = "${obj.lan}" target="_blank">LAN</a>&nbsp;|&nbsp;<a href = "${obj.ts}" target="_blank">Tailscale</a>
             </div>
           </div>
         `;
