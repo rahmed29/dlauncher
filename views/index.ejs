@@ -7,16 +7,37 @@
     <link rel="preconnect" href="https://rsms.me/" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     <link rel="stylesheet" href="/style.css" />
+    <!-- Default favicon (fallback for unsupported browsers) -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
   <body class="dark">
     <script>
+      // Function to update favicon based on theme
+      // https://favicon.im/blog/favicon-for-light-dark-modes
+      function updateFavicon(theme) {
+        const favicon =
+          document.querySelector('link[rel="icon"]') ||
+          document.createElement("link");
+
+        favicon.rel = "icon";
+        favicon.type = "image/png";
+        favicon.href =
+          theme === "dark" ? "/favicon-dark.ico" : "/favicon-light.ico";
+
+        if (!document.querySelector('link[rel="icon"]')) {
+          document.head.appendChild(favicon);
+        }
+      }
+
       if (
         window.matchMedia &&
         window.matchMedia("(prefers-color-scheme: dark)").matches
       ) {
+        updateFavicon("dark");
       } else {
         document.body.classList.remove("dark");
         document.body.classList.add("light");
+        updateFavicon("light");
       }
       window
         .matchMedia("(prefers-color-scheme: dark)")
@@ -25,9 +46,11 @@
           if (newColorScheme === "dark") {
             document.body.classList.remove("light");
             document.body.classList.add("dark");
+            updateFavicon("dark");
           } else {
             document.body.classList.remove("dark");
             document.body.classList.add("light");
+            updateFavicon("light");
           }
         });
     </script>
