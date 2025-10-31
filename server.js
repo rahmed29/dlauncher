@@ -107,12 +107,10 @@ app.get("/_refetch", async (req, res) => {
       .status(200)
       .json({ status: "The server has refetched it's public IP." });
   } else {
-    res
-      .status(500)
-      .json({
-        error:
-          "The server attempted to refetch it's public IP, but something went wrong.",
-      });
+    res.status(500).json({
+      error:
+        "The server attempted to refetch it's public IP, but something went wrong.",
+    });
   }
 });
 
