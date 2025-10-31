@@ -54,6 +54,12 @@ const routes = [
     port: "5000/login?apiKey=5114a417-c7e0-435d-9ac4-a39919ed2a95",
   },
   {
+    shorthand: "opengist",
+    name: "Opengist",
+    img: "/app_icons/opengist.svg",
+    port: 6157,
+  },
+  {
     shorthand: "cobalt",
     name: "Cobalt",
     img: "/app_icons/cobalt.png",
