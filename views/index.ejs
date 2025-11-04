@@ -68,24 +68,22 @@
       <div id="albums"></div>
     </div>
     <script type="module">
-      document.getElementById("cbox").addEventListener("input", async (e) => {
-        const response = await fetch("/_toggleRouting", {
-          method: "POST",
-          cache: "no-store",
-        });
-        const json = await response.json();
-        if (response.ok) {
-          generateHtml(json.routingEnabled);
-          document.getElementById("cbox").checked = json.routingEnabled;
-        }
+      document.getElementById("cbox").addEventListener("input", function () {
+        localStorage.setItem("routingEnabled", this.checked);
+        generateHtml(this.checked);
       });
 
       const response = await fetch("/getRoutes", { cache: "no-store" });
       const json = await response.json();
       const routes = json.routes;
-      document.getElementById("cbox").checked = json.routingEnabled;
 
-      generateHtml(json.routingEnabled);
+      const routingEnabled =
+        (localStorage.getItem("routingEnabled") || "true").toLowerCase() ===
+        "true";
+
+      document.getElementById("cbox").checked = routingEnabled;
+
+      generateHtml(routingEnabled);
 
       function generateHtml(routing) {
         for (const img of document.getElementsByClassName("albumArt")) {

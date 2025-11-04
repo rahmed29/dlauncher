@@ -12,7 +12,6 @@ const shellOutput = shell.exec("tailscale ip");
 const tailnetIp = shellOutput.substring(0, shellOutput.indexOf("\n")).trim();
 const privateIp = os.networkInterfaces()["enp2s0"][0]["address"];
 
-let routingEnabled = false;
 let homeIp = undefined;
 
 async function getIp() {
@@ -93,17 +92,11 @@ app.get("/getRoutes", async (req, res) => {
   });
   res.status(200).json({
     routes: albums,
-    routingEnabled,
   });
 });
 
 app.get("/", async (req, res) => {
   res.status(200).render("index.ejs");
-});
-
-app.post("/_toggleRouting", (req, res) => {
-  routingEnabled = !routingEnabled;
-  res.status(200).json({ routingEnabled });
 });
 
 app.get("/_refetch", async (req, res) => {
