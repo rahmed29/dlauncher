@@ -1,6 +1,7 @@
 import os from "node:os";
 import express from "express";
 import shell from "shelljs";
+import fs from "node:fs";
 const app = express();
 
 const PORT_NUMBER = 2077;
@@ -52,36 +53,36 @@ const routes = [
     img: "/app_icons/kav.svg",
     port: "5000/login?apiKey=5114a417-c7e0-435d-9ac4-a39919ed2a95",
   },
-  {
-    shorthand: "opengist",
-    name: "Opengist",
-    img: "/app_icons/opengist.svg",
-    port: 6157,
-  },
+  // {
+  //   shorthand: "opengist",
+  //   name: "Opengist",
+  //   img: "/app_icons/opengist.svg",
+  //   port: 6157,
+  // },
   {
     shorthand: "cobalt",
     name: "Cobalt",
     img: "/app_icons/cobalt.png",
     port: 8080,
   },
-  {
-    shorthand: "notes",
-    name: "Notes",
-    img: "/app_icons/book.png",
-    port: 5555,
-  },
-  {
-    shorthand: "blog",
-    name: "Deno Blog",
-    img: "/app_icons/deno.png",
-    port: 8000,
-  },
-  {
-    shorthand: "code",
-    name: "Code Server",
-    img: "/app_icons/coder.png",
-    port: 1337,
-  },
+  // {
+  //   shorthand: "notes",
+  //   name: "Notes",
+  //   img: "/app_icons/book.png",
+  //   port: 5555,
+  // },
+  // {
+  //   shorthand: "blog",
+  //   name: "Deno Blog",
+  //   img: "/app_icons/deno.png",
+  //   port: 8000,
+  // },
+  // {
+  //   shorthand: "code",
+  //   name: "Code Server",
+  //   img: "/app_icons/coder.png",
+  //   port: 1337,
+  // },
 ];
 
 app.get("/getRoutes", async (req, res) => {
