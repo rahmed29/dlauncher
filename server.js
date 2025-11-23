@@ -1,7 +1,7 @@
 import os from "node:os";
-import express from "express";
-import shell from "shelljs";
-import fs from "node:fs";
+import express from "npm:express";
+
+const decoder = new TextDecoder("utf-8");
 const app = express();
 
 const PORT_NUMBER = 2077;
@@ -9,7 +9,10 @@ const PORT_NUMBER = 2077;
 app.use(express.static("./public"));
 app.set("view engine", "ejs");
 
-const shellOutput = shell.exec("tailscale ip");
+const shellOutputU8 = new Deno.Command("tailscale", {
+  args: ["ip"],
+}).outputSync().stdout;
+const shellOutput = decoder.decode(new Uint8Array(shellOutputU8));
 const tailnetIp = shellOutput.substring(0, shellOutput.indexOf("\n")).trim();
 const privateIp = os.networkInterfaces()["enp2s0"][0]["address"];
 
