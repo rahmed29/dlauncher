@@ -1,6 +1,9 @@
 import os from "node:os";
 import express from "npm:express";
 
+// This is needed to work with deno
+import ejs from "npm:ejs";
+
 const decoder = new TextDecoder("utf-8");
 const app = express();
 
