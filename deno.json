@@ -4,7 +4,6 @@
       "read": ["./public", "./views"],
       "net": ["0.0.0.0:2077", "ipv4.icanhazip.com"],
       "sys": ["networkInterfaces"],
-      "run": ["tailscale"],
       "env": true
     }
   }

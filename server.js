@@ -1,4 +1,3 @@
-import os from "node:os";
 import express from "npm:express";
 
 // This is needed to work with deno
@@ -12,12 +11,12 @@ const PORT_NUMBER = 2077;
 app.use(express.static("./public"));
 app.set("view engine", "ejs");
 
-const shellOutputU8 = new Deno.Command("tailscale", {
-  args: ["ip"],
-}).outputSync().stdout;
-const shellOutput = decoder.decode(new Uint8Array(shellOutputU8));
-const tailnetIp = shellOutput.substring(0, shellOutput.indexOf("\n")).trim();
-const privateIp = os.networkInterfaces()["enp2s0"][0]["address"];
+const privateIp = Deno.networkInterfaces().find(
+  (e) => e.name === "enp3s0" && e.family === "IPv4",
+).address;
+const tailnetIp = Deno.networkInterfaces().find(
+  (e) => e.name === "tailscale0" && e.family === "IPv4",
+).address;
 
 let homeIp = undefined;
 
