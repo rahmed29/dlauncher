@@ -3,7 +3,6 @@ import express from "npm:express";
 // This is needed to work with deno
 import ejs from "npm:ejs";
 
-const decoder = new TextDecoder("utf-8");
 const app = express();
 
 const PORT_NUMBER = 2077;
@@ -12,10 +11,10 @@ app.use(express.static("./public"));
 app.set("view engine", "ejs");
 
 const privateIp = Deno.networkInterfaces().find(
-  (e) => e.name === "enp3s0" && e.family === "IPv4",
+  (e) => e.name === "enp3s0" && e.family === "IPv4"
 ).address;
 const tailnetIp = Deno.networkInterfaces().find(
-  (e) => e.name === "tailscale0" && e.family === "IPv4",
+  (e) => e.name === "tailscale0" && e.family === "IPv4"
 ).address;
 
 let homeIp = undefined;
