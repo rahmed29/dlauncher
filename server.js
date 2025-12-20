@@ -11,7 +11,7 @@ app.use(express.static("./public"));
 app.set("view engine", "ejs");
 
 const privateIp = Deno.networkInterfaces().find(
-  (e) => e.name === "enp3s0" && e.family === "IPv4"
+  (e) => e.name.substring(0, 3) === "enp" && e.family === "IPv4"
 ).address;
 const tailnetIp = Deno.networkInterfaces().find(
   (e) => e.name === "tailscale0" && e.family === "IPv4"
@@ -40,10 +40,10 @@ const routes = [
     port: 7171,
   },
   {
-    shorthand: "beats",
-    name: "prods.party",
-    img: "/app_icons/cat.png",
-    port: "1738/ryaan",
+    shorthand: "immich",
+    name: "Immich",
+    img: "/app_icons/immich.svg",
+    port: 2283,
   },
   {
     shorthand: "jellyfin",
@@ -56,6 +56,12 @@ const routes = [
     name: "Kavita",
     img: "/app_icons/kav.svg",
     port: "5000/login?apiKey=5114a417-c7e0-435d-9ac4-a39919ed2a95",
+  },
+  {
+    shorthand: "beats",
+    name: "prods.party",
+    img: "/app_icons/cat.png",
+    port: "1738/ryaan",
   },
   // {
   //   shorthand: "opengist",
