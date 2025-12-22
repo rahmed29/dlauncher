@@ -4,8 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inspiron</title>
-    <link rel="preconnect" href="https://rsms.me/" />
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     <link rel="stylesheet" href="/style.css" />
     <!-- Default favicon (fallback for unsupported browsers) -->
     <link rel="icon" href="/favicon-light.ico" type="image/x-icon" />
@@ -55,37 +53,77 @@
         });
     </script>
     <div id="main">
-      <div id="toggleRouting">
-        <input type="checkbox" id="cbox" />
-        <label
-          for="cbox"
-          title="When enabled, applications on the dashboard will be links that dynamically route your request based on your connecting IP instead of showing you separate links for LAN and Tailscale."
-          >Enable Routing</label
-        >
+      <div id="modes">
+        <label for="car-select">Mode:</label>
+        <select id="car-select" name="car-select">
+          <option
+            value="0"
+            title="Applications on the dashboard will be links that use the server's private IP."
+          >
+            Private IP
+          </option>
+          <option
+            value="1"
+            title="Applications on the dashboard will be links that use the server's Tailscale IP."
+          >
+            Tailscale IP
+          </option>
+          <option
+            value="2"
+            title="Applications on the dashboard will be links that use the server's hostname."
+          >
+            Hostname
+          </option>
+          <option
+            value="3"
+            title="Applications on the dashboard will be links that dynamically route your request based on your connecting IP instead of showing you separate links for LAN and Tailscale."
+          >
+            Routing
+          </option>
+          <option
+            value="4"
+            title="Applications on the dashboard will show separate links for LAN and Tailscale."
+          >
+            Two links
+          </option>
+        </select>
       </div>
-      <h2 id="title" class="linear-text-gradient">Inspiron</h2>
+      <h2 id="title" class="linear-text-gradient"><%= hostname %></h2>
       <span id="desc"><i id="home">Self-Hosted Applications</i></span>
       <div id="albums"></div>
     </div>
     <script type="module">
-      document.getElementById("cbox").addEventListener("input", function () {
-        localStorage.setItem("routingEnabled", this.checked);
-        generateHtml(this.checked);
-      });
+      const title = document.getElementById("title");
+      const titleText = document.getElementById("title").innerText;
+
+      title.innerText =
+        titleText.slice(0, 1).toUpperCase() + titleText.slice(1).toLowerCase();
+
+      document
+        .getElementById("car-select")
+        .addEventListener("change", function (e) {
+          localStorage.setItem("mode", this.value);
+          generateHtml(this.value);
+        });
 
       const response = await fetch("/getRoutes", { cache: "no-store" });
       const json = await response.json();
       const routes = json.routes;
 
-      const routingEnabled =
-        (localStorage.getItem("routingEnabled") || "true").toLowerCase() ===
-        "true";
+      const mode = (localStorage.getItem("mode") || "0").toString();
+      // mode 0 = only use private ip
+      // mode 1 = only use tailscale ip
+      // mode 2 = use hostname
+      // mode 3 = enable routing
+      // mode 4 = two links
 
-      document.getElementById("cbox").checked = routingEnabled;
+      document
+        .getElementById("car-select")
+        .children[mode].setAttribute("selected", "");
 
-      generateHtml(routingEnabled);
+      generateHtml(mode);
 
-      function generateHtml(routing) {
+      function generateHtml(mode) {
         for (const img of document.getElementsByClassName("albumArt")) {
           img.onerror = null;
         }
@@ -96,34 +134,48 @@
         }
         document.getElementById("albums").innerHTML = html_;
 
-        // Yes, this is technically susceptible to XSS
-        function generateAlbum(obj, i) {
-          if (routing) {
+        function generateAlbum(route, i) {
+          if (mode != 4) {
             return `
-            <a href = "/${obj.shorthand}" target="_blank" style = "text-decoration: none;">
-              <div class="album">
+              <a href = ${generateHref(
+                route,
+                mode
+              )} style = "text-decoration: none;">
+                <div class="album">
+                  <img
+                    class="albumArt"
+                    src="${route.img}"
+                    onerror="this.onerror=null; this.src='/album_art/avatar.png'"
+                  />
+                  <div class="albumDetails">${route.name}</div>
+                </div>
+              </a>
+            `;
+          } else if (mode == 4) {
+            return `
+            <div class="album">
               <img
                 class="albumArt"
-                src="${obj.img}"
+                src="${route.img}"
                 onerror="this.onerror=null; this.src='/album_art/avatar.png'"
               />
-              <div class="albumDetails">${obj.name}</div>
+              <div class="albumDetails">
+                <span class = "appName">${route.name}</span>&nbsp;&nbsp;<a href = "${route.lan}">LAN</a>&nbsp;|&nbsp;<a href = "${route.ts}">Tailscale</a>
               </div>
-            </a>
-        `;
+            </div>`;
           }
-          return `
-          <div class="album">
-            <img
-              class="albumArt"
-              src="${obj.img}"
-              onerror="this.onerror=null; this.src='/album_art/avatar.png'"
-            />
-            <div class="albumDetails">
-              <span class = "appName">${obj.name}</span>&nbsp;&nbsp;<a href = "${obj.lan}" target="_blank">LAN</a>&nbsp;|&nbsp;<a href = "${obj.ts}" target="_blank">Tailscale</a>
-            </div>
-          </div>
-        `;
+        }
+
+        function generateHref(route, mode) {
+          if (mode == 0) {
+            return route.lan;
+          } else if (mode == 1) {
+            return route.ts;
+          } else if (mode == 2) {
+            return route.hn;
+          } else if (mode == 3) {
+            return `/${route.shorthand}`;
+          }
         }
       }
     </script>

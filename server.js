@@ -10,6 +10,10 @@ const PORT_NUMBER = 2077;
 app.use(express.static("./public"));
 app.set("view engine", "ejs");
 
+const hostname = Deno.hostname();
+// If you want to use hostname.local instead, replace above line with this
+// const hostname = Deno.hostname() + ".local";
+
 const privateIp = Deno.networkInterfaces().find(
   (e) => e.name.substring(0, 3) === "enp" && e.family === "IPv4"
 ).address;
@@ -57,48 +61,31 @@ const routes = [
     img: "/app_icons/kav.svg",
     port: "5000/login?apiKey=5114a417-c7e0-435d-9ac4-a39919ed2a95",
   },
-  {
-    shorthand: "beats",
-    name: "prods.party",
-    img: "/app_icons/cat.png",
-    port: "1738/ryaan",
-  },
-  // {
-  //   shorthand: "opengist",
-  //   name: "Opengist",
-  //   img: "/app_icons/opengist.svg",
-  //   port: 6157,
-  // },
-  {
-    shorthand: "cobalt",
-    name: "Cobalt",
-    img: "/app_icons/cobalt.png",
-    port: 8080,
-  },
   // {
   //   shorthand: "notes",
   //   name: "Notes",
   //   img: "/app_icons/book.png",
   //   port: 5555,
   // },
-  // {
-  //   shorthand: "blog",
-  //   name: "Deno Blog",
-  //   img: "/app_icons/deno.png",
-  //   port: 8000,
-  // },
-  // {
-  //   shorthand: "code",
-  //   name: "Code Server",
-  //   img: "/app_icons/coder.png",
-  //   port: 1337,
-  // },
+  {
+    shorthand: "beats",
+    name: "prods.party",
+    img: "/app_icons/cat.png",
+    port: "1738/ryaan",
+  },
+  {
+    shorthand: "cobalt",
+    name: "cobalt",
+    img: "/app_icons/cobalt.png",
+    port: 8080,
+  },
 ];
 
 app.get("/getRoutes", async (req, res) => {
   const albums = routes.map((e) => {
     e.lan = `http://${privateIp}:${e.port}`;
     e.ts = `http://${tailnetIp}:${e.port}`;
+    e.hn = `http://${hostname}:${e.port}`;
     return e;
   });
   res.status(200).json({
@@ -107,7 +94,9 @@ app.get("/getRoutes", async (req, res) => {
 });
 
 app.get("/", async (req, res) => {
-  res.status(200).render("index.ejs");
+  res.status(200).render("index.ejs", {
+    hostname,
+  });
 });
 
 app.get("/_refetch", async (req, res) => {

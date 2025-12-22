@@ -68,17 +68,11 @@ body {
   font-size: 0.8rem;
 }
 
-#toggleRouting {
+#modes {
   align-self: flex-start;
-}
-
-#toggleRouting input {
-  cursor: pointer;
-}
-
-#toggleRouting label {
-  cursor: help;
-  font-size: 0.9em;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: monospace;
 }
 
 #albums {
