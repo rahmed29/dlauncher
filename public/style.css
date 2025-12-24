@@ -75,6 +75,10 @@ body {
   font-family: monospace;
 }
 
+#modes select {
+  font-family: monospace;
+}
+
 #albums {
   width: 100%;
   max-width: 900px;

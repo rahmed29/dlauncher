@@ -14,6 +14,7 @@ const hostname = Deno.hostname();
 // If you want to use hostname.local instead, replace above line with this
 // const hostname = Deno.hostname() + ".local";
 
+const yourDomain = "ryaan.win";
 const privateIp = Deno.networkInterfaces().find(
   (e) => e.name.substring(0, 3) === "enp" && e.family === "IPv4"
 ).address;
@@ -86,6 +87,7 @@ app.get("/getRoutes", async (req, res) => {
     e.lan = `http://${privateIp}:${e.port}`;
     e.ts = `http://${tailnetIp}:${e.port}`;
     e.hn = `http://${hostname}:${e.port}`;
+    e.dom = `https://${e.shorthand}.${yourDomain}`;
     return e;
   });
   res.status(200).json({
