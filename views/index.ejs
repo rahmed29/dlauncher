@@ -147,7 +147,7 @@
               <a href = ${generateHref(
                 route,
                 mode
-              )} style = "text-decoration: none;">
+              )} target = "_blank" style = "text-decoration: none;">
                 <div class="album">
                   <img
                     class="albumArt"
@@ -167,7 +167,7 @@
                 onerror="this.onerror=null; this.src='/album_art/avatar.png'"
               />
               <div class="albumDetails">
-                <span class = "appName">${route.name}</span>&nbsp;&nbsp;<a href = "${route.lan}">LAN</a>&nbsp;|&nbsp;<a href = "${route.ts}">Tailscale</a>
+                <span class = "appName">${route.name}</span>&nbsp;&nbsp;<a href = "${route.lan}" target = "_blank">LAN</a>&nbsp;|&nbsp;<a href = "${route.ts}" target = "_blank">Tailscale</a>
               </div>
             </div>`;
           }
