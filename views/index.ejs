@@ -144,20 +144,19 @@
         function generateAlbum(route, i) {
           if (mode != 4) {
             return `
-              <a href = ${generateHref(
-                route,
-                mode
-              )} target = "_blank" style = "text-decoration: none;">
-                <div class="album">
-                  <img
-                    class="albumArt"
-                    src="${route.img}"
-                    onerror="this.onerror=null; this.src='/album_art/avatar.png'"
-                  />
-                  <div class="albumDetails">${route.name}</div>
-                </div>
-              </a>
-            `;
+            <a href = ${generateHref(
+              route,
+              mode
+            )} target = "_blank" style = "text-decoration: none;">
+              <div class="album">
+                <img
+                  class="albumArt"
+                  src="${route.img}"
+                  onerror="this.onerror=null; this.src='/album_art/avatar.png'"
+                />
+                <div class="albumDetails">${route.name}</div>
+              </div>
+            </a>`;
           } else if (mode == 4) {
             return `
             <div class="album">
